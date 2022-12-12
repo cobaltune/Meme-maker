@@ -1,0 +1,84 @@
+
+#1.0 The Power of Canvas
+
+<canvas>는 canvas API의 창
+canvas API는 우리가 javascript로 그래픽을 그릴 수 있게 해주는 API
++) WebGl API로 2d & 3d 그래픽을 그릴 수 있음
+
+
+#1.1 Our First Drawing
+
+그림을 그리기 위해 context라는 것을 얻어야 함
+context는 우리가 <canvas>에서 사용할 기본 페인트 브러쉬
+
+
+#1.2 Paths
+
+`fillRect` 함수는 단축 함수
+선들을 먼저 그리고 포인트 A부터 포인트 B까지 선들을 그려야 함
+그리고 그걸 `fill`할지 `stroke`할지 선택 (+arc도 마찬가지)
+
+  // part.1
+  ctx.rect(50, 50, 100, 100);
+
+  // part.2 둘 중 택1
+  ctx.fill();
+  ctx.stroke();
+
+  // 위와 동일한 결과
+  ctx.fillRect(50, 50, 100, 100);
+
+
+색을 입히고 싶을 때
+
+  ctx.rect(50, 50, 100, 100);
+  ctx.rect(150, 150, 100, 100);
+  ctx.rect(250, 250, 100, 100);
+  ctx.fill();
+  ctx.rect(350, 350, 100, 100);
+  ctx.fillStyle = “red”;
+  ctx.fill();
+
+
+*문제
+전부 빨간색이 된 건, 전부 같은 path의 일부이기 때문
+
+하나의 layer와 같은 path를 상상해
+같은 path 위에 많은 선들을 그린다고 했을 때,
+이 style 중 무언가를 바꾸면 그건 모든 path에 영향을 끼침
+
+  ctx.rect(50, 50, 100, 100);
+  ctx.rect(150, 150, 100, 100);
+  ctx.rect(250, 250, 100, 100);
+  ctx.fill();
+  ctx.rect(350, 350, 100, 100);
+  ctx.fillStyle = “red”;
+  setTimeout(() => {ctx.fill();
+  }, 5000);
+
+  /* 출력값
+  3개의 검정 네모 박스가 (5초 뒤) => 4개의 빨강 박스로 바뀜 */
+
+path를 현재 색상으로 채워서 같은 path안에서 전부 이어져 있음
+
+
+그럼 이걸 이제 끊어야 함
+  ctx.rect(50, 50, 100, 100);
+  ctx.rect(150, 150, 100, 100);
+  ctx.rect(250, 250, 100, 100);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.rect(350, 350, 100, 100);
+  ctx.fillStyle = “red”;
+  ctx.fill();
+
+`beginPath()`
+: 새로운 path를 만듦, 이 새 path는 이전 path와 완전히 분리(단절)됨
+
+
+canvas에서 그림을 그릴 때 그 과정이 매우 필수적이라는 것을 배움
+기본적으로 코드에서 모든 단계들을 하나씩 다 해야한다는 뜻
+
+
+#1.3 moveTo and lineTo
