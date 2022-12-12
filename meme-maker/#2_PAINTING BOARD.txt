@@ -123,5 +123,281 @@ canvas의 끝까지 움직여서 밖으로 나갔다가 마우스를 떼고
   document.addEventListener('mouseleave', cancelPainting);
 
 
-  #2.2 Line Width
+#2.2 Line Width
+
+만들 것
+- 그림판에 선의 굵기를 수정할 수 있는 <input> 생성
+
+  function onLineWidthChange(event) {
+    ctx.lineWidth = event.target.value;
+  }
+
+  lineWidth.addEventListener('change', onLineWidthChange);
+
+
+*문제
+선을 그리고, 굵기를 조절한 다음 다시 그리면 전에 그렸던 선도 바뀜
+: ctx를 업데이트했기 때문, 우리가 하는 일은 선을 그리는 것뿐
+
+그래서 이전에 그려진 선과 새로운 선의 연결을 끊어줘야 함
+: 모든 line들은 같은 path로 그려지기 때문
+
+  // solution 1
+  const lineWidth = document.getElementById('line-width');
+  const canvas = document.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = 800;
+  canvas.height = 800;
+
+  ctx.lineWidth = lineWidth.value;
+
+  let isPainting = false;
+
+  function onMove(event) {
+    if (isPainting) {
+      ctx.lineTo(event.offsetX, event.offsetY);
+      ctx.stroke();
+      return;
+    }
+    ctx.beginPath();                                       // here 1
+    ctx.moveTo(event.offsetX, event.offsetY);
+  }
+
+  function startPainting(event) {
+    isPainting = true;
+  }
+
+  function cancelPainting(event) {
+    isPainting = false;
+  }
+
+  function onLineWidthChange(event) {
+    ctx.lineWidth = event.target.value;
+  }
+
+  canvas.addEventListener('mousemove', onMove);
+  canvas.addEventListener('mousedown', startPainting);
+  canvas.addEventListener('mouseup', cancelPainting);
+  document.addEventListener('mouseleave', cancelPainting);
+
+  lineWidth.addEventListener('change', onLineWidthChange);
+
+  // solution 2
+  const lineWidth = document.getElementById('line-width');
+  const canvas = document.querySelector('canvas');
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = 800;
+  canvas.height = 800;
+
+  ctx.lineWidth = lineWidth.value;
+
+  let isPainting = false;
+
+  function onMove(event) {
+    if (isPainting) {
+      ctx.lineTo(event.offsetX, event.offsetY);
+      ctx.stroke();
+      return;
+    }
+    ctx.moveTo(event.offsetX, event.offsetY);
+  }
+
+  function startPainting(event) {
+    isPainting = true;
+  }
+
+  function cancelPainting(event) {
+    isPainting = false;
+    ctx.beginPath();                                       // here 2
+  }
+
+  function onLineWidthChange(event) {
+    ctx.lineWidth = event.target.value;
+  }
+
+  canvas.addEventListener('mousemove', onMove);
+  canvas.addEventListener('mousedown', startPainting);
+  canvas.addEventListener('mouseup', cancelPainting);
+  document.addEventListener('mouseleave', cancelPainting);
+
+  lineWidth.addEventListener('change', onLineWidthChange);
+
+
+range input의 또 다른 attribute
+⇒ step (단계) 추가
+
+  <input id="line-width" type="range" min="1" max="10" value="5" step="0.5" />
+
+
+#2.3 Paint Color part One
+
+만들 것
+- line의 색깔 바꾸기
+
+
+`<input type="color">`
+이걸 직접 구현하는 것보다 <color input>을 사용하는 게 훨씬 편함
+
+  - 원하는 모든 색상을 선택할 수 있고
+  - eyedropper(스포이드)도 있음
+
+
+  // html
+  <input type="color" id="color" />
+
+  // js
+  const color = document.getElementById('color');
+
+  function onColorChange(event) {
+    ctx.strokeStyle = event.target.value;
+    ctx.fillStyle = event.target.value;
+  }
+
+  color.addEventListener('change', onColorChange);
+
+
+#2.4 Paint Color part Two
+
+만들 것
+- 사용자가 색상에 다른 옵션을 줄 수 있도록 버튼<span> 제작
+    - <color input>이 있지만 예쁜 색깔을 찾기 힘드니까 미리 만들어진 색상을 제공
+
+
+`<data->`
+: (-) 다음에 내가 넣고 싶은 값(string)을 넣을 수 있음, 아주 유용한 attribute
+html element 안에 내가 넣고 싶은 값을 자유롭게 넣을 수 있음
+그래서 나중에 이 값을 활용해 javascript에서 쓸 수 있음
+
+  // html
+  <div
+        class="color-option"
+        style="background-color: #1abc9c"
+        data-color="#1abc9c"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #3498db"
+        data-color="#3498db"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #34495e"
+        data-color="#34495e"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #27ae60"
+        data-color="#27ae60"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #8e44ad"
+        data-color="#8e44ad"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #f1c40f"
+        data-color="#f1c40f"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #e74c3c"
+        data-color="#e74c3c"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #95a5a6"
+        data-color="#95a5a6"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #d35400"
+        data-color="#d35400"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #bdc3c7"
+        data-color="#bdc3c7"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #2ecc71"
+        data-color="#2ecc71"
+      ></div>
+      <div
+        class="color-option"
+        style="background-color: #e67e22"
+        data-color="#e67e22"
+      ></div>
+
+  // css
+  .color-option {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
+
+
+각 <div>에 addEventListener를 추가하고 싶음
+
+  const colorOption = document.getElementsByClassName("color-option")
   
+  colorOption.forEach();
+
+
+*문제
+이렇게 하면 `forEach`는 colorOption의 함수가 아니라고 함
+: colorOption은 배열이 아니기 때문
+  이건 HTMLCollection 이건 ArrayLike 객체지 Array(배열)은 아님
+
+  const colorOption = Array.from(
+  document.getElementsByClassName('color-option')
+  );
+
+`Array.from`을 사용해서 배열로 생성
+: 이건 배열로 주지 않고 HTMLCollection으로 주기 때문
+그래서 우리는 이걸 javascript의 배열로 만들고 싶은 거
+
+  const colorOption = document.getElementsByClassName("color-option")
+
+  function onColorClick(event){}
+
+  colorOption.forEach((color) =>
+    color.addEventListener('click', onColorClick),
+  );
+
+
+dataset / color : 보면 우리가 세팅한 색상을 확인할 수 있음
+
+  function onColorClick(event){
+    console.dir(event.target.dataset.color);
+  }
+
+
+ctx의 strokeStyle과 fillStyle을 바꿔주기
+
+  function onColorClick(event){
+    ctx.strokeStyle = event.target.dataset.color;
+    ctx.fillStyle = event.target.dataset.color;
+  }
+
+
+시간 있을 때 만들어보세용 ~
+- strokeStyle과 fillStyle을 한번에 바꿔주는 함수
+
+
+사용자에게 이 click이 작동되었다는 걸 알려주기 위해
+색상을 click했을 때 <input>박스 안의 색상을 click한 색상으로 바꿔주는 거
+
+  function onColorClick(event) {
+    const colorValue = event.target.dataset.color;
+    ctx.strokeStyle = colorValue;
+    ctx.fillStyle = colorValue;
+    color.value = colorValue;
+  }
+
+
+#2.5 Filling Mode
+
