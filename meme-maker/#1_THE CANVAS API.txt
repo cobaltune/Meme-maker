@@ -16,7 +16,7 @@ context는 우리가 <canvas>에서 사용할 기본 페인트 브러쉬
 
 `fillRect` 함수는 단축 함수
 선들을 먼저 그리고 포인트 A부터 포인트 B까지 선들을 그려야 함
-그리고 그걸 `fill`할지 `stroke`할지 선택 (+arc도 마찬가지)
+그리고 그걸 `fill`할지 `stroke`할지 선택 (+`arc`도 마찬가지)
 
   // part.1
   ctx.rect(50, 50, 100, 100);
@@ -82,3 +82,58 @@ canvas에서 그림을 그릴 때 그 과정이 매우 필수적이라는 것을
 
 
 #1.3 moveTo and lineTo
+
+`rect` 함수는 단축 함수
+
+`rect`를 사용하지 않고 이 두 function의 조합만 사용
+
+  - `moveTo`
+    : 선을 긋지 않으면서 연필을 종이의 다른 부분으로 움직임
+  - `lineTo`
+    : 선을 그으면서 연필을 종이의 다른 부분으로 움직임
+
+  ctx.moveTo(50, 50);
+  ctx.lineTo(150, 50);
+  ctx.lineTo(150, 150);
+  ctx.lineTo(50, 150);
+  ctx.lineTo(50, 50);
+  ctx.fill();
+
+
+#1.4 Drawing Project One
+
+집을 그려보아용 ~
+
+  ctx.fillRect(200, 200, 50, 200);
+  ctx.fillRect(400, 200, 50, 200);
+  ctx.lineWidth = 2;
+  ctx.fillRect(300, 300, 50, 100);
+  ctx.fillRect(200, 200, 200, 20);
+  ctx.moveTo(200, 200);
+  ctx.lineTo(325, 100);
+  ctx.lineTo(450, 200);
+  ctx.fill();
+
+*context는 순서가 있기 때문에 style 설정 먼저 작성
+
+
+#1.5 Drawing Project Two
+
+사람을 그려보아용 ~
+
+  ctx.fillRect(210 - 40, 200 - 30, 15, 100);
+  ctx.fillRect(350 - 40, 200 - 30, 15, 100);
+  ctx.fillRect(260 - 40, 200 - 30, 60, 200);
+
+  ctx.arc(250, 100, 50, 0, 2 * Math.PI);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.fillStyle = 'white';
+  ctx.arc(220 + 10, 80, 8, Math.PI, 2 * Math.PI);
+  ctx.arc(260 + 10, 80, 8, Math.PI, 2 * Math.PI);
+  ctx.fill();
+
+
+참고 사이트 by.arc
+[https://www.w3schools.com/tags/canvas_arc.asp](https://www.w3schools.com/tags/canvas_arc.asp)
