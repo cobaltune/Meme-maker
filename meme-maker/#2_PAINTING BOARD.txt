@@ -1,0 +1,127 @@
+
+#2.0 Painting Lines
+
+우리가 만들 그림판의 프로토타입을 만들어보자
+
+우리의 목표
+- 보드를 클릭할 때마다 선을 그리는 거
+
+offsetX, offsetY 보면 클릭한 x, y좌표값을 알 수 있음
+
+  function onClick(event) {
+    console.log(event);
+  }
+
+  canvas.addEventListener('click', onClick);
+
+
+색상 클릭하면 복사되는 사이트
+[https://flatuicolors.com/](https://flatuicolors.com/)
+
+
+
+  const colors = [
+    '#ff3838',
+    '#ffb8b8',
+    '#c56cf0',
+    '#ff9f1a',
+    '#32ff7e',
+    '#7efff5',
+    '#18dcff',
+    '#7d5fff',
+  ];
+
+  function onClick(event) {
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    ctx.strokeStyle = color;
+    ctx.lineTo(event.offsetX, event.offsetY);
+    ctx.stroke();
+  }
+
+  canvas.addEventListener('mousemove', onClick);
+
+
+시간 있을 때 만들어보세용 ~
+- 클릭할 때마다 선이 그어지는 시작점을 변경하는 코드
+- 클릭할 때마다 색이 달라지는 코드
+  - 클릭할 때마다 다른 색들로 이루어진 두 array를 번갈아가면서 사용할 수 있겠지
+
+
+#2.1 Mouse Painting
+
+마우스를 클릭한 채로 움직일 때부터 손가락을 뗄때까지 그리도록
+
+  let isPainting = false;
+
+  function onMove(event) {
+    if (isPainting) {
+      ctx.lineTo(event.offsetX, event.offsetY);
+      ctx.stroke();
+      return;
+    }
+    ctx.moveTo(event.offsetX, event.offsetY);
+  }
+
+  function onMouseDown(event) {
+    isPainting = true;
+  }
+
+  function onMouseUp(event) {
+    isPainting = false;
+  }
+
+  canvas.addEventListener('mousemove', onMove);
+  canvas.addEventListener('mousedown', onMouseDown);
+  canvas.addEventListener('mouseup', onMouseUp);
+
+
+*작은 버그
+canvas로 와서 마우스를 누르고
+canvas의 끝까지 움직여서 밖으로 나갔다가 마우스를 떼고
+다시 canvas로 돌아가면 아무것도 누르고 있지 않지만 그림을 그림
+
+: `mouseUp` 이벤트가 실행되지 않았기 때문인데
+그 이유가 canvas 밖으로 나갈 때까지 마우스를 누르고 있었기 때문에
+
+
+마우스가 떠났을 때를 감지해서, canvas를 떠나면 더이상 누르고 있지 않다는 걸 의미
+
+  // solution 1 (니콜라스는 이 방법을 선호)
+  canvas.addEventListener('mouseleave', onMouseUp);
+
+  // solution 2
+  document.addEventListener('mouseup', onMouseUp);
+
+여기에서 `isPainting`을 `false`로 만들어서
+어디에서든지 마우스에서 손을 떼면 `isPainting`은 `false`가 됨
+
+
+  let isPainting = false;
+
+  function onMove(event) {
+    if (isPainting) {
+      ctx.lineTo(event.offsetX, event.offsetY);
+      ctx.stroke();
+      return;
+    }
+    ctx.moveTo(event.offsetX, event.offsetY);
+  }
+
+  function startPainting(event) {
+    isPainting = true;
+  }
+
+  function cancelPainting(event) {
+    isPainting = false;
+  }
+
+  canvas.addEventListener('mousemove', onMove);
+  canvas.addEventListener('mousedown', startPainting);
+  canvas.addEventListener('mouseup', cancelPainting);
+  document.addEventListener('mouseleave', cancelPainting);
+
+
+  #2.2 Line Width
+  
