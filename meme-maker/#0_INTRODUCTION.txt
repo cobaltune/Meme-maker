@@ -1,0 +1,26 @@
+
+#0.1 Welcome
+
+- 만들 것 : 그림판, 밈(meme) 생성기
+- 알아볼 것 : canvas api
+
+배울 목록
+- 선 그리는 방법
+- 색깔 바꾸는 방법
+- 그림판 전체 채우는 방법
+- 두께 조절하는 방법
+- 그림 안에 다른 이미지 넣는 방법
+- 텍스트 넣는 방법
+
+
+#0.2 Requirements
+
+바닐라 JS로 크롬 앱 만들기 듣고 오세용 ~
+
+
+#0.3 Project Setup****
+
+Extension - server 검색 - Live Server (Ritwick Dey) 다운
+우측 하단 Go Live 클릭
+: 서버에 의해 자동을 index.html 파일이 열림
+  (VSC에서 저장하면 서버는 페이지를 새로고침해서 따로 새로고침을 안해도 자동으로 반영됨)
