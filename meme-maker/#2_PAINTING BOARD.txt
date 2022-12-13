@@ -401,3 +401,44 @@ ctx의 strokeStyle과 fillStyle을 바꿔주기
 
 #2.5 Filling Mode
 
+만들 것
+- 버튼을 click하면 선을 그리는 대신, 색깔을 채워 넣을 수 있도록 수정
+
+  // html
+  <div>
+        <div
+          class="color-option"
+          style="background-color: #1abc9c"
+          data-color="#1abc9c"
+        ></div>
+        ...
+      </div>
+      <button id="mode-btn">Fill</button>
+
+
+  // js
+  const modeBtn = document.getElementById('mode-btn');
+
+  function onModeClick() {
+    if (isFilling) {
+      isFilling = false;
+      modeBtn.innerText = 'Fill';
+    } else {
+      isFilling = true;
+      modeBtn.innerText = 'Draw';
+    }
+  }
+
+  function onCanvasClick() {
+    if (isFilling) {
+      ctx.fillRect(0, 0, 800, 800);
+    }
+  }
+
+  canvas.addEventListener('click', onCanvasClick);
+
+  modeBtn.addEventListener('click', onModeClick);
+
+
+#2.6 Eraser
+
