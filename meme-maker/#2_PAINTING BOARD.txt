@@ -442,3 +442,33 @@ ctx의 strokeStyle과 fillStyle을 바꿔주기
 
 #2.6 Eraser
 
+만들 것
+- 그림판을 초기화하는 버튼 제작
+- 지우개(=하얀색과 그리는 것과 같음)
+
+// html
+  <button id="destroy-btn">Destroy</button>
+  <button id="eraser-btn">Erase</button>
+
+// js
+  const destroyBtn = document.getElementById('destroy-btn');
+  const eraserBtn = document.getElementById('eraser-btn');
+
+
+  function onDestroyClick() {
+    ctx.fillStyle = 'white';
+    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  }
+
+  function onEraserClick() {
+    ctx.strokeStyle = 'white';
+    isFilling = false;
+    modeBtn.innerText = 'Fill';
+  }
+
+
+  destroyBtn.addEventListener('click', onDestroyClick);
+  eraserBtn.addEventListener('click', onEraserClick);
+
+
+#2.7 Recap
