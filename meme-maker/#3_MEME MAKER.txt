@@ -1,0 +1,103 @@
+
+#3.0 Adding Images
+
+만들 것 (밈 메이커 기능)
+- canvas에 이미지 추가
+- 이미지 위에 텍스트 추가
+
+  // html
+  <input type="file" />
+
+*문제
+예를 들어 이미지를 선택하려고 하는데 비디오도 선택할 수 있음
+
+  <input type="file" accept="image/*" />
+
+  원하는 파일의 타입을 설정할 수 있음
+  (png, gif, jpeg 등 포맷 상관없이 이미지만 원한다는 뜻)
+
+
+files: / 0: 보면 user가 선택한 파일의 정보를 확인할 수 있음
+
+  const fileInput = document.getElementById('file');
+
+  function onFileChange(event) {
+    console.dir(event.target);
+  }
+
+  fileInput.addEventListener('change', onFileChange);
+
+**브라우저는 항상 user와 실제 파일 시스템과 격리되어 있음
+예를 들어, 브라우저의 javascript는 user의 파일을 읽을 수 없음
+
+파일들은 user가 파일을 선택했을 때만 javascript에게 보이게 됨
+user가 파일을 선택했기 때문에, 선택된 파일은 브라우저의 메모리 속에 들어감
+
+
+URL을 가지고 선택된 파일에 접근하고 싶음
+파일은 브라우저의 메모리에 있고, 브라우저가 그 메모리 부분의 URL을 줬으면
+
+  function onFileChange(event) {
+    const file = event.target.files[0];
+    const url = URL.createObjectURL(file);
+    console.log(url);
+  }
+
+  // 출력값
+  blob:http://127.0.0.1:5500/be766d1b-366f-4699-8fb2-142732bb2ed7
+
+
+`blob:http://127.0.0.1:5500/be766d1b-366f-4699-8fb2-142732bb2ed7`
+이걸 복사해서 새 탭에 붙여넣기 하면 user가 선택한 이미지를 볼 수 있음
+
+**이 URL은 현실의 인터넷에서 존재하지는 않음, 브라우저를 위한 URL임
+⇒ 이게 브라우저가 자신의 메모리에 있는 파일을 드러내는 방식
+
+
+이미지를 만드는 것
+
+  const image = new image();
+
+  /* 위 코드는 html에서 아래와 쓰는 것과 동일
+  <img src=""></img> */
+
+
+이미지에 event listener를 추가
+
+  function onFileChange(event) {
+    const file = event.target.files[0];
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.src = url;
+    image.onload = function () {
+      ctx.drawImage(image, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+    };
+  }
+
+
++) event를 추가하는 새로운 방법
+
+  // canvas.onmousemove = function() {}
+  canvas.onmousemove = onMove
+
+  canvas.addEventListener('mousemove', onMove);  // 이 둘은 같은걸 의미
+
+니콜라스가 왜 `addEventListener`를 좋아하냐면
+: 같은 event안에 많은 event listener들을 추가할 수도, 삭제할 수도 있기 때문
+
+
+이미지를 그릴 때 file input을 비우고 싶음 (user가 또 다른 이미지를 추가하고 싶을지도 모르니까)
+
+  function onFileChange(event) {
+    const file = event.target.files[0];
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.src = url;
+    image.onload = function () {
+      ctx.drawImage(image, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      fileInput.value = null;
+    };
+  }
+
+
+#3.1 Adding Text
