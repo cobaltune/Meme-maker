@@ -407,7 +407,7 @@ ctx의 strokeStyle과 fillStyle을 바꿔주기
 - 버튼을 click하면 선을 그리는 대신, 색깔을 채워 넣을 수 있도록 수정
 
   // html
-  <div class="color-options">
+  <div>
       <input type="color" id="color" />
       <div
         class="color-option"
