@@ -170,3 +170,81 @@ user가 canvas를 더블클릭해도 input에 text가 없으면 아무것도 하
 
 #3.2 Saving Image
 
+만들 것
+- 현재 canvas 안에 있는 이미지를 저장하는 버튼 제작
+
+  // html
+  <button id="save">Save image</button>
+
+  // js
+  const saveBtn = document.getElementById('save');
+
+  function onSaveClick() {
+    const url = canvas.toDataURL();
+  }
+
+  saveBtn.addEventListener('click', onSaveClick);
+
+`canvas.toDataUrl`
+: canvas에 있는 메소드로, user가 그린 이미지를 URL로 인코딩되어 있는 텍스트
+
+
+<a>태그를 이용해서 링크를 만들 건데, 웹사이트로 링크하는 대신 이 이미지 URl로 링크 걸고
+그다음 <a>태그 안에 있는 `download`라는 속성을 이용
+
+  function onSaveClick() {
+    const url = canvas.toDataURL();
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Untitled.png';
+    a.click();
+  }
+
+`download`
+: `download`라는 속성을 <a>태그에 더해주면 파일 다운로드를 작동시킴
+
+
+#3.3 Recap
+
+-file (recap)
+
+  // html
+  <input type="file" accept="image/*" id="file" />
+
+  // js
+  function onFileChange(event) {
+    const file = event.target.files[0];
+    const url = URL.createObjectURL(file);
+    const image = new Image();
+    image.src = url;
+    image.onload = function () {
+      ctx.drawImage(image, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      fileInput.value = null;
+    };
+  }
+
+*`files[0]` 이게 파일 배열인 이유
+: <input>에 <multiple>속성을 추가할 수 있기 때문
+
+  <input type="file" accept="image/*" <!--mutiple--> */ id="file" />
+
+<multiple>속성을 추가하면 user가 파일을 여러 개 업로드할 수 있음 
+하지만 여기선 user가 하나의 파일만 업로드하고 있기 때문에 파일 배열에서 [0] 첫 번째 파일만 필요
+
+
+-save (recap)
+
+  function onSaveClick() {
+    const url = canvas.toDataURL();
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'Untitled.png';
+    a.click();
+  }
+
+<href>가 할당된 <a>태그가 생성돼서 - <a>태그는 이미지 URL로 감
+- <download> 속성이 있고 - a.click();로 가짜 클릭만 하면 - 클릭이 다운로드 창을 띄워줌
+
+
+#3.4 CSS
+
