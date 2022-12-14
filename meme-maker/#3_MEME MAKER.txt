@@ -292,9 +292,36 @@ challenge
   - 유저가 폰트 크기와 종류를 바꿀 수 있도록
     ex) range(슬라이더)를 만들어서 폰트 사이즈를 바꿀 수 있게라든가
 
+  1. 원하는 폰트를 ‘serif’에 넣어주면 됨
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    ctx.font = 'bold 48px serif';
+    ctx.strokeText('Hello world', 50, 100);
+
+
+  2. 내 폰트를 불러올 수도 있음
+
+    let f = new FontFace('test', 'url(x)');
+
+    f.load().then(function() {
+        // ready to use the font in a canvas context
+    });
+
+  폰트 파일 경로 URl을 통해서 `'test'`라는 폰트를 불러오고 있음
+  폰트 load가 완료되면 위와 같은 방식(`ctx.font = 'bold 48px serif';`)으로 작성하면 됨
+  만약 폰트 이름이 'test'면 여기(`serif`)도 `'test'`라고 적어주면 됨
+
+  우선 폰트를 불러와서 원하는 폰트 이름을 지어야 함
+  그리고 `'(x)'` 여기에 폰트의 URL 경로를 적어야 함
+  폰트를 다 불러오면 `ctx.font`의 `serif`부분을 폰트 불러왔을 때 지어준 이름으로 적으면 됨
+
+
 - 텍스트의 fillStyle or strokeStyle 선택할 수 있도록
 
-- 선뿐만 아니라 모양을 그릴 수 있는 옵션
+
+- 선 뿐만 아니라 모양을 그릴 수 있는 옵션
   +) 1. onMove 함수로 와서 `stroke();`대신 `fill(); 하거나
      2. `mousedown`해서 `moseup`할 때 `ctx.fill`
 
