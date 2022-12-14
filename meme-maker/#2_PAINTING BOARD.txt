@@ -342,17 +342,17 @@ html element 안에 내가 넣고 싶은 값을 자유롭게 넣을 수 있음
 
 각 <div>에 addEventListener를 추가하고 싶음
 
-  const colorOption = document.getElementsByClassName("color-option")
+  const colorOptions = document.getElementsByClassName("color-option")
   
   colorOption.forEach();
 
 
 *문제
-이렇게 하면 `forEach`는 colorOption의 함수가 아니라고 함
-: colorOption은 배열이 아니기 때문
+이렇게 하면 `forEach`는 colorOptions의 함수가 아니라고 함
+: colorOptions은 배열이 아니기 때문
   이건 HTMLCollection 이건 ArrayLike 객체지 Array(배열)은 아님
 
-  const colorOption = Array.from(
+  const colorOptions = Array.from(
   document.getElementsByClassName('color-option')
   );
 
@@ -360,7 +360,9 @@ html element 안에 내가 넣고 싶은 값을 자유롭게 넣을 수 있음
 : 이건 배열로 주지 않고 HTMLCollection으로 주기 때문
 그래서 우리는 이걸 javascript의 배열로 만들고 싶은 거
 
-  const colorOption = document.getElementsByClassName("color-option")
+  const colorOptions = Array.from(
+  document.getElementsByClassName('color-option')
+  );
 
   function onColorClick(event){}
 
@@ -405,12 +407,13 @@ ctx의 strokeStyle과 fillStyle을 바꿔주기
 - 버튼을 click하면 선을 그리는 대신, 색깔을 채워 넣을 수 있도록 수정
 
   // html
-  <div>
-        <div
-          class="color-option"
-          style="background-color: #1abc9c"
-          data-color="#1abc9c"
-        ></div>
+  <div class="color-options">
+      <input type="color" id="color" />
+      <div
+        class="color-option"
+        style="background-color: #1abc9c"
+        data-color="#1abc9c"
+      ></div>
         ...
       </div>
       <button id="mode-btn">Fill</button>
