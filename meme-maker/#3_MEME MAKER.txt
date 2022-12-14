@@ -101,3 +101,72 @@ URL을 가지고 선택된 파일에 접근하고 싶음
 
 
 #3.1 Adding Text
+
+만들 것
+- text input
+    - user가 텍스트를 입력할 수 있고
+    - canvas를 더블클릭하면 그 text를 추가
+
+  // html
+  <input id="text" type="text" placeholder="Write and then double click" />
+
+  // js
+  const textInput = document.getElementById('text');
+
+  function onDoubleClick(event) {
+    const text = textInput.value;
+    ctx.lineWidth = 1;
+    ctx.strokeText(text, event.offsetX, event.offsetY);
+  }
+
+  canvas.addEventListener('dbclick', onDoubleClick);
+
+
+`dbclick`
+: `dbclick` event는 기본적으로 `mousedown`, `moseup`이 매우 빠르게 일어날 때 발생함
+
+
+*문제
+`lineWidth`를 수정했기 때문에, painting brush의 크기도 작아졌다는 것을 의미
+이론적으로 `lineWidth`를 1로 바꾸고 - text를 집어넣고 - 기존에 가지고 있던 `lineWidth`로 돌아가야 함
+⇒ ctx의 이전 상태를 저장하고 - 몇 가지 변경 후에 - 그것들을 다시 되돌리고 싶음
+
+  function onDoubleClick(event) {
+    ctx.save();
+    const text = textInput.value;
+    ctx.lineWidth = 1;
+    ctx.strokeText(text, event.offsetX, event.offsetY);
+    ctx.restore();
+  }
+
+
+`save()`
+: ctx의 현재 상태, 색상, 스타일 등 모든 것을 저장
+
+`restore()`
+: 수정을 완료하고 쓰면 `save`와 `restore`사이에서는 어떤 수정을 하던 저장되지 않고 이전에 저장된 상태로 돌아감
+⇒ 변경되는 코드가 실행되기 전에 현재 상태와 선택들을 저장하기 때문
+
+
+user가 canvas를 더블클릭해도 input에 text가 없으면 아무것도 하고 싶지 않도록
+
+  function onDoubleClick(event) {
+    const text = textInput.value;
+    if (text === '') {
+      ctx.save();
+      ctx.lineWidth = 1;
+      ctx.font = '68px serif';
+      ctx.fillText(text, event.offsetX, event.offsetY);
+      ctx.restore();
+    }
+  }
+
+
+선을 그리면 매우 직선(as like 사각형) 둥글게
+
+  // ctx.lineWidth = lineWidth.value; 밑에
+  ctx.lineCap = 'round';
+
+
+#3.2 Saving Image
+
