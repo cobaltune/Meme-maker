@@ -6,7 +6,9 @@ const modeBtn = document.getElementById('mode-btn');
 const destroyBtn = document.getElementById('destroy-btn');
 const eraserBtn = document.getElementById('eraser-btn');
 
-const colorOption = Array.from(document.getElementsByClassName('color-option'));
+const colorOptions = Array.from(
+  document.getElementsByClassName('color-option'),
+);
 const color = document.getElementById('color');
 const lineWidth = document.getElementById('line-width');
 const canvas = document.querySelector('canvas');
@@ -125,7 +127,7 @@ canvas.addEventListener('click', onCanvasClick);
 lineWidth.addEventListener('change', onLineWidthChange);
 color.addEventListener('change', onColorChange);
 
-colorOption.forEach((color) => color.addEventListener('click', onColorClick));
+colorOptions.forEach((color) => color.addEventListener('click', onColorClick));
 
 modeBtn.addEventListener('click', onModeClick);
 destroyBtn.addEventListener('click', onDestroyClick);
