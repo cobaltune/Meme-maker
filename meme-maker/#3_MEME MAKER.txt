@@ -248,3 +248,58 @@ user가 canvas를 더블클릭해도 input에 text가 없으면 아무것도 하
 
 #3.4 CSS
 
+reset css 설치 사이트
+[https://meyerweb.com/eric/tools/css/reset/](https://meyerweb.com/eric/tools/css/reset/)
+
+
+  // css
+  button {
+    all: unset;
+  }
+
+: css속성을 전부 제거하라는 뜻
+(다소 극단적이지만 없애고 싶은 속성을 하나하나 적어줄 필요 없이 all: unset; 하나로 다 제거해 주는 장점)파일 선택 <input>은 꾸미는게 엄청 어려움
+
+
+파일 선택 <input>은 꾸미는 게 엄청 어려움
+하지만 이 <input>을 숨기고 <label>버튼을 만들어줄 수는 있음
+
+  // html
+  /* way 1 */
+  <label for="file">
+          Add photo
+          <input type="file" accept="image/*" id="file"
+        /></label>
+
+  /* way 2 */
+  <label for="file">
+          Add photo </label>
+  <input type="file" accept="image/*" id="file"
+        />
+
+<label>의 <for>값과 <input>의 <id>값만 동일하면 위치 상관없이 작동
+그래도 정리하기 편하게 <label>태그 안에다가 넣기
+
+
+시간 있을 때 만들어보세용 ~
+- 전체 삭제 작업 전에 확인창
+
+
+#3.5 Code Challenge
+
+challenge
+- 텍스트의 폰트 && 사이즈 바꾸기
+  - 유저가 폰트 크기와 종류를 바꿀 수 있도록
+    ex) range(슬라이더)를 만들어서 폰트 사이즈를 바꿀 수 있게라든가
+
+- 텍스트의 fillStyle or strokeStyle 선택할 수 있도록
+
+- 선뿐만 아니라 모양을 그릴 수 있는 옵션
+  +) 1. onMove 함수로 와서 `stroke();`대신 `fill(); 하거나
+     2. `mousedown`해서 `moseup`할 때 `ctx.fill`
+
+        function cancelPainting(event) {
+        isPainting = false;
+        ctx.fill();
+        ctx.beginPath();
+      }
